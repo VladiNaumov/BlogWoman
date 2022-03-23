@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
+from blogWoman.views import pageNotFound
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('women/', include('blogWoman.urls')), # вызываем в каталоге blogWoman файл urls.py
+    path('', include('blogWoman.urls')), # вызываем в каталоге blogWoman файл urls.py
 
 ]
+
+handler404 = pageNotFound
