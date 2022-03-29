@@ -9,6 +9,9 @@ def index(request):
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Abaut'})
 
+def phones(request):
+    return HttpResponse('<h1>PHONES</h1>')
+
 def categories(request, catid):
     if request.POST:
         print(request.POST)
