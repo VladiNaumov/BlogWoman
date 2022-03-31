@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blogWoman.apps.BlogwomanConfig',
+    'naumdeveloper.apps.NaumdeveloperConfig',
+
 ]
 
 MIDDLEWARE = [

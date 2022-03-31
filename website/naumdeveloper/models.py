@@ -1,6 +1,6 @@
 from django.db import models
 
-class Women(models.Model):
+class Naumdeveloper(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True)
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
@@ -12,7 +12,7 @@ class Women(models.Model):
         return self.title
 
 
-class Phones(models.Model):
+class Stores(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True)
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/")

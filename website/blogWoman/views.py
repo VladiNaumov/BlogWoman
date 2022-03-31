@@ -12,7 +12,7 @@ def index(request):
 
 def phones(request):
     posts = Phones.objects.all()
-    return render(request, 'women/phones.html', {'posts': posts, 'menu': menu, 'title': 'Phones'})
+    return render(request, 'women/store.html', {'posts': posts, 'menu': menu, 'title': 'Phones'})
 
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Abaut'})
