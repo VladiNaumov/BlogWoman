@@ -1,3 +1,30 @@
+import sqlite3
+
+""" пример программы, которая создает новую базу данных перед открытием ее для операций: """
+
+db_filename = '../website/orders.db'
+connection = sqlite3.connect(db_filename)
+cur = connection.cursor()
+
+""" создание таблице user """
+cur.execute("""CREATE TABLE IF NOT EXISTS users(
+   userid INT PRIMARY KEY,
+   fname TEXT,
+   lname TEXT,
+   gender TEXT);
+""")
+connection.commit()
+
+""" заполнаяем таблицу """
+cur.execute("""INSERT INTO users(userid, fname, lname, gender) 
+   VALUES('00090', 'Alex', 'Smith', 'male');""")
+connection.commit()
+
+connection.close()
+
+
+
+"""
 from blogWoman.models import Women
 
 demo = 'python manage.py shell'
@@ -16,12 +43,11 @@ w10 = Women.objects.create(title='Дженнифер Энистон', content=' 
 
 from blogWoman.models import Phones
 Phones(title='Iphone', content='apple Phone')
-"""
+
 w1=_
 w1
 w1.save()
 
-"""
 
 w4 = Phones.objects.create(title='Samsung', content='Samsung Edg 7')
 w5 = Phones.objects.create(title='Samsung', content='Samsung A52')
@@ -32,4 +58,6 @@ w8 = Phones.objects.create(title='DELL', content='Dell Ti100')
 
 from naumdeveloper.models import Naumdeveloper
 w0 = Naumdeveloper.objects.create(title='Creating websites', content='Hello, I create websites:')
+
+"""
 
