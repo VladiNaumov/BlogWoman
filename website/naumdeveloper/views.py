@@ -5,6 +5,7 @@ from naumdeveloper.models import Naumdeveloper, Stores
 
 menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
 
+
 def index(request):
     posts = Naumdeveloper.objects.all()
     return render(request, 'naumdeveloper/index.html', {'posts': posts, 'menu': menu, 'title': 'index page'})
