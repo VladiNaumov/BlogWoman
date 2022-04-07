@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+""" models.py служит для формирование нужной таблице в базе данных  """
 
 class Women(models.Model):
     title = models.CharField(max_length=255)

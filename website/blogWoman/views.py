@@ -3,6 +3,10 @@ from django.shortcuts import render
 
 from blogWoman.models import Women, Phones
 
+""" Основное базовое представление на основе класса. 
+Все остальные представления, основанные на классах, наследуются от этого базового класса. 
+Он не является строго общим представлением и поэтому может быть импортирован из django.views """
+
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name': 'add_page'},
         {'title': "Обратная связь", 'url_name': 'contact'},
