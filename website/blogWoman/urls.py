@@ -1,9 +1,13 @@
 from django.urls import path, re_path
-from .views import index, about, phones
+from .views import index, about, phones, addpage, contact, login, show_post
 
 urlpatterns = [
     path('', index, name = 'home'), # http://127.0.0.1:8000/
     path('about/', about, name = 'about'), #http://127.0.0.1:8000/about
-    path('phones/', phones, name = 'phones' )
+    path('addpage/', addpage, name='add_page'),
+    path('contact/', contact, name='contact'),
+    path('login/', login, name='login'),
+    path('post/<int:post_id>/', show_post, name='post'),
+    path('phones/', phones, name = 'phones'),
 ]
 
