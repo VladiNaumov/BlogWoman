@@ -52,7 +52,6 @@ def pageNotFound(request, exception):
 
 
 def show_category(request, cat_id):
-
     posts = Women.objects.filter(cat_id=cat_id)
     cats = Category.objects.all()
 
