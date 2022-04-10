@@ -21,7 +21,7 @@ from blogWoman.views import pageNotFound
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('women/', include('blogWoman.urls')), # вызываем в каталоге blogWoman файл urls.py
-    path('naumdeveloper/', include('naumdeveloper.urls'))
+    path('naumdeveloper/', include('naumdeveloper.urls')),
 
 ]
 

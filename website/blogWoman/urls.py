@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import index, about, phones, addpage, contact, login, show_post, show_category
+from .views import index, about, phones, addpage, contact, login, show_post, show_category, photo
 
 """ Менеджер URL-ов """
 

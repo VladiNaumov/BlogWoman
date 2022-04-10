@@ -69,3 +69,4 @@ def show_category(request, cat_id):
 
     return render(request, 'women/index.html', context=context)
 
+
