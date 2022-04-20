@@ -1,5 +1,5 @@
 from django.http import HttpResponseNotFound, HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 
 from blogWoman.models import Women, Phones, Category
 
@@ -60,10 +60,9 @@ def pageNotFound(request, exception):
 
 
 def show_category(request, cat_id):
-    posts = Women.objects.filter(cat_id=cat_id)
+    #posts = Women.objects.filter(cat_id=cat_id)
 
-    if len(posts) == 0:
-        raise Http404()
+    posts = get_list_or_404(Women, cat_id=cat_id)
 
     context = {
         'posts': posts,
