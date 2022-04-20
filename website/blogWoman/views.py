@@ -1,5 +1,5 @@
 from django.http import HttpResponseNotFound, HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from blogWoman.models import Women, Phones, Category
 
@@ -42,8 +42,17 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+def show_post(request, post_slug):
+    post = get_object_or_404(Women, slug=post_slug)
+
+    context = {
+        'post': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': post.cat_id,
+    }
+
+    return render(request, 'women/post.html', context=context)
 
 
 def pageNotFound(request, exception):
