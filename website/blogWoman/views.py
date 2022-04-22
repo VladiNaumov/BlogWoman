@@ -1,7 +1,9 @@
 from django.http import HttpResponseNotFound, HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 
+from blogWoman.forms import AddPostForm
 from blogWoman.models import Women, Phones, Category
+
 
 """ Основное базовое представление на основе класса. 
 Все остальные представления, основанные на классах, наследуются от этого базового класса. 
@@ -33,7 +35,19 @@ def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Abaut'})
 
 def addpage(request):
-    return HttpResponse("Добавление статьи")
+    if request.method == 'POST':
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            #print(form.cleaned_data)
+            try:
+                Women.objects.create(**form.cleaned_data)
+                return redirect('home')
+            except:
+                form.add_error(None, 'Ошибка добавления поста')
+
+    else:
+        form = AddPostForm()
+    return render(request, 'women/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
 
 def contact(request):
     return HttpResponse("Обратная связь")
