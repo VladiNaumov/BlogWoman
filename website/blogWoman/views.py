@@ -44,6 +44,7 @@ def about(request):
 class AddPage(CreateView):
     form_class = AddPostForm
     template_name = 'women/addpage.html'
+    # для перенаправление на страницу 'home' после добавления статьи
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
