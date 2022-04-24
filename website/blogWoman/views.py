@@ -1,8 +1,10 @@
 from django.http import HttpResponseNotFound, HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView
 
 from blogWoman.forms import AddPostForm
-from blogWoman.models import Women, Phones, Category
+from blogWoman.models import Women,Category
 
 
 """ Основное базовое представление на основе класса. 
@@ -14,36 +16,42 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Обратная связь", 'url_name': 'contact'},
         {'title': "Войти", 'url_name': 'login'}
 ]
+# данный метод - отвечает за главную страницу сайта
+class WomenHome(ListView):
+    # выбирает все записи из таблице Woman
+    model = Women
+    # указываем какой шаблон нужно использовать
+    template_name = 'women/index.html'
+    # указываем какую переменную в шаблоне ма используем
+    context_object_name = 'posts'
 
-def index(request):
-    posts = Women.objects.all()
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        context['title'] = 'Главная страница'
+        context['cat_selected'] = 0
+        return context
 
-    context = {
-        'posts': posts,
-        'menu': menu,
-        'title': 'Главная страница',
-        'cat_selected': 0,
-    }
-    return render(request, 'women/index.html', context=context)
+    # данный метод чтобы говорить Django,что именно мы хотим отображать на странице сайта
+    def get_queryset(self):
+        # чтобы читать только опубликованные статьи
+        return Women.objects.filter(is_published=True)
 
-
-def phones(request):
-    posts = Phones.objects.all()
-    return render(request, 'women/phones.html', {'posts': posts, 'menu': menu, 'title': 'Phones'})
 
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Abaut'})
 
-def addpage(request):
-    if request.method == 'POST':
-        form = AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            # print(form.cleaned_data)
-            form.save() # сохраняет данные написанные в форме в базу данных
-            return redirect('home')
-    else:
-        form = AddPostForm()
-    return render(request, 'women/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
+class AddPage(CreateView):
+    form_class = AddPostForm
+    template_name = 'women/addpage.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление статьи'
+        context['menu'] = menu
+        return context
+
 
 def contact(request):
     return HttpResponse("Обратная связь")
@@ -52,35 +60,39 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_slug):
-    post = get_object_or_404(Women, slug=post_slug)
+class ShowPost(DetailView):
+    model = Women
+    template_name = 'women/post.html'
+    # для определение переменной 'post_slug',как и написано в файле urls.py
+    slug_url_kwarg = 'post_slug'
+    context_object_name = 'post'
 
-    context = {
-        'post': post,
-        'menu': menu,
-        'title': post.title,
-        'cat_selected': post.cat_id,
-    }
-
-    return render(request, 'women/post.html', context=context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = context['post']
+        context['menu'] = menu
+        return context
 
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
 
-def show_category(request, cat_id):
-    #posts = Women.objects.filter(cat_id=cat_id)
+class WomenCategory(ListView):
+    model = Women
+    template_name = 'women/index.html'
+    context_object_name = 'posts'
+    # отработка странице 404
+    allow_empty = False
 
-    posts = get_list_or_404(Women, cat_id=cat_id)
+    def get_queryset(self):
+        return Women.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True)
 
-    context = {
-        'posts': posts,
-        'menu': menu,
-        'title': 'Отображение по рубрикам',
-        'cat_selected': cat_id,
-    }
-
-    return render(request, 'women/index.html', context=context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Категория - ' + str(context['posts'][0].cat)
+        context['menu'] = menu
+        context['cat_selected'] = context['posts'][0].cat_id
+        return context
 
 
