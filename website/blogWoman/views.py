@@ -16,20 +16,31 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Обратная связь", 'url_name': 'contact'},
         {'title': "Войти", 'url_name': 'login'}
 ]
-# данный метод - отвечает за главную страницу сайта
+""" class - отвечает за главную страницу сайта """
 class WomenHome(ListView):
-    # выбирает все записи из таблице Woman
+    # выбирает все записи из таблице BD Woman
     model = Women
     # указываем какой шаблон нужно использовать
     template_name = 'women/index.html'
-    # указываем какую переменную в шаблоне ма используем
+    # указываем какую переменную в Менеджер URL-ов url.py мы используем
     context_object_name = 'posts'
+
+    """ 
+    метод get_context_data объединяет(сливает вместе) данные контекста всех родительских классов с данными текущего класса. 
+    Чтобы сохранить такое поведение в пользовательских классах, в которых вы собираетесь изменять контекст, 
+    вы должны в начале вызвать метод get_context_data родительского класса.
+    Также вы може написать свои ORM-запросы к базе....
+    Если нет двух классов, которые пытаются определить одинаковый ключ - вы получите желаемый результат. 
+    Однако, если есть некий класс, который пытается переопределить ключ, установленный родительскими классами(после вызова super), то любой потомок этого класса также должен явно установить такой ключ(после вызова super), если необходимо гарантировать полное переопределение данных родителей. 
+    Если у вас возникли проблемы, просмотрите mro(method resolution order) вашего представления. 
+    """
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu'] = menu
         context['title'] = 'Главная страница'
         context['cat_selected'] = 0
+
         return context
 
     # данный метод чтобы говорить Django,что именно мы хотим отображать на странице сайта
@@ -41,10 +52,14 @@ class WomenHome(ListView):
 def about(request):
     return render(request, 'women/about.html', {'menu': menu, 'title': 'Abaut'})
 
+""" class для работы с формами """
 class AddPage(CreateView):
     form_class = AddPostForm
+
+    # указываем какой шаблон нужно использовать
     template_name = 'women/addpage.html'
-    # для перенаправление на страницу 'home' после добавления статьи
+
+    # указываем какую переменную в Менеджер URL-ов url.py мы используем
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -60,13 +75,20 @@ def contact(request):
 def login(request):
     return HttpResponse("Авторизация")
 
-
+# class для работы (показа) поста
 class ShowPost(DetailView):
+    # выбирает все записи из таблице BD Woman
     model = Women
+
+    # указываем какой шаблон нужно использовать
     template_name = 'women/post.html'
-    # для определение переменной 'post_slug',как и написано в файле urls.py
+
+    # указываем какую переменную в Менеджер URL-ов url.py мы используем
     slug_url_kwarg = 'post_slug'
+
+    # указываем какую переменную в Менеджер URL-ов url.py мы используем
     context_object_name = 'post'
+
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,6 +105,7 @@ class WomenCategory(ListView):
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
+
     # отработка странице 404
     allow_empty = False
 
