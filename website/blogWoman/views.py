@@ -20,7 +20,7 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
 class WomenHome(ListView):
     # выбирает все записи из таблице BD Woman
     model = Women
-    # указываем какой шаблон нужно использовать
+    # подключение данной странице ('index.html') к шаблонизатору
     template_name = 'women/index.html'
     # указываем какую переменную в Менеджер URL-ов url.py мы используем
     context_object_name = 'posts'
@@ -56,7 +56,7 @@ def about(request):
 class AddPage(CreateView):
     form_class = AddPostForm
 
-    # указываем какой шаблон нужно использовать
+    # подключение данной странице 'addpage.html' к шаблонизатору
     template_name = 'women/addpage.html'
 
     # указываем какую переменную в Менеджер URL-ов url.py мы используем
@@ -80,7 +80,7 @@ class ShowPost(DetailView):
     # выбирает все записи из таблице BD Woman
     model = Women
 
-    # указываем какой шаблон нужно использовать
+    # подключение данной странице ('post.html') к шаблонизатору
     template_name = 'women/post.html'
 
     # указываем какую переменную в Менеджер URL-ов url.py мы используем
